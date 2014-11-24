@@ -1,14 +1,47 @@
 <head>
-  <title>simple-todos</title>
+  <title>Project List</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <div class='container'>
+    <header>
+      <h1>Project lists ({{incompleteCount}})!</h1>
 
-  {{> hello}}
+      <label class='hide-completed'>
+        <input type='checkbox' checked="{{hideCompleted}}" />
+        Hide completed Projects
+      </label>
+
+      {{> loginButtons}}
+
+      {{#if currentUser}}
+        <form class='new-project'>
+          <input type='text' name='text' placeholder='Add a new project' />
+        </form>
+      {{/if}}
+    </header>
+
+    <ul>
+      {{#each projects}}
+        {{> project}}
+      {{/each}}
+    </ul>
+  </div>
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="project">
+  <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
+    <button class='delete'>&times;</button>
+    <input type='checkbox' checked="{{checked}}" class='toggle-checked'/>
+    {{#if isOwner}}
+      <button class='toggle-private'>
+        {{#if private}}
+          Private
+        {{else}}
+          Public
+        {{/if}}
+      </button>
+    {{/if}}
+    <span class='text'><strong>{{username}}</strong> - {{text}}</span>
+  </li>
 </template>
